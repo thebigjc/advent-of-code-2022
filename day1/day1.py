@@ -1,5 +1,7 @@
-from aocd import data, submit
-from more_itertools import take
+from aocd import lines, submit
+from typing import Iterator
+import heapq
+
 
 def elves(lines: Iterator[str]) -> Iterator[int]:
     s = 0
@@ -9,6 +11,7 @@ def elves(lines: Iterator[str]) -> Iterator[int]:
             s = 0
         else:
             s += int(l)
+
 
 m = max(elves(lines))
 three = sum(heapq.nlargest(3, elves(lines)))
