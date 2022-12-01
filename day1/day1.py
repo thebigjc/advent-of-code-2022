@@ -1,7 +1,8 @@
 from aocd import lines, submit
+from typing import Iterator
 import heapq 
 
-def elves(lines):
+def elves(lines: Iterator[str]) -> Iterator[int]:
     s = 0
     for l in lines:
         if len(l) == 0:
