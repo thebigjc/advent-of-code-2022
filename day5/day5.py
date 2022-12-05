@@ -1,10 +1,6 @@
 from aocd import lines, submit
-import re
 from itertools import batched
 from parse import parse
-
-REGEX_MOVE = re.compile(r"move (\d+) from (\d+) to (\d+)")
-
 
 stacks_a = []
 stacks_b = []
