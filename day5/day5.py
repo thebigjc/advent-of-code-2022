@@ -1,5 +1,6 @@
-from aocd import lines, submit
 from itertools import batched
+
+from aocd import lines, submit
 from parse import parse
 
 stacks_a = []
