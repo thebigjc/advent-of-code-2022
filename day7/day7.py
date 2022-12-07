@@ -1,5 +1,6 @@
 from aocd import lines, submit
 from parse import parse
+from typing import Optional
 
 TEST = """$ cd /
 $ ls
@@ -39,13 +40,18 @@ def test_partb_dirs():
 
 
 class Dir:
-    def __init__(self, name: str, parent=None):
+    name : str
+    parent : Optional["Dir"]
+    children : list["Dir"]
+    size : int
+
+    def __init__(self, name: str, parent : Optional["Dir"] = None) -> None:
         self.name = name
         self.parent = parent
         self.children = []
         self.size = 0
 
-    def add_dir(self, child):
+    def add_dir(self, child : "Dir"):
         self.children.append(child)
 
     def add_file(self, size: int):
@@ -59,7 +65,7 @@ def parse_dirs(dir_lines: list[str]) -> list[Dir]:
     root = Dir("/")
     cwd = root
 
-    all_dirs = [input]
+    all_dirs : list[Dir] = [root]
 
     for line in dir_lines:
         if line.startswith("$ cd "):
@@ -68,6 +74,9 @@ def parse_dirs(dir_lines: list[str]) -> list[Dir]:
             if dir_name == "/":
                 cwd = root
             elif dir_name == "..":
+                if cwd.parent is None:
+                    raise Exception("Can't go up from root")
+
                 cwd = cwd.parent
             else:
                 all_dirs.append(new_dir)
