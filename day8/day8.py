@@ -33,7 +33,7 @@ def is_visible(t, i):
     (x, y) = to_coords(i, y_len)
 
     visible_left = True
-    for i_x in range(x):
+    for i_x in range(0, x, 1):
         if tree_at(i_x, y) >= t:
             visible_left = False
 
@@ -43,7 +43,7 @@ def is_visible(t, i):
             visible_right = False
 
     visible_down = True
-    for i_y in range(y):
+    for i_y in range(0, y, 1):
         if tree_at(x, i_y) >= t:
             visible_down = False
 
