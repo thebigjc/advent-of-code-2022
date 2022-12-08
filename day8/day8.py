@@ -65,23 +65,14 @@ def score_tree(t, x, y, start, end, step, tree_func):
 def tree_score(t, i):
     (x, y) = to_coords(i, y_len)
 
-    score_left = score_tree(t, x, y, x-1, -1, -1, lambda l: tree_at(l, y))
-    score_right = score_tree(t, x, y, x+1, x_len, 1, lambda l: tree_at(l, y))
-#    score_right = score_tree(t, x, y, x+1, x_len, 1, lambda l: tree_at(l, y))
-#    score_right = score_tree(t, x, y, x+1, x_len, 1, lambda l: tree_at(l, y))
+    horiz = lambda l: tree_at(l, y)
+    vert = lambda l: tree_at(x, l)
 
-    score_up = 0
-    for i_y in range(y-1, -1, -1):
-        score_up += 1
-        if tree_at(x, i_y) >= t:
-            break
+    score_left = score_tree(t, x, y, x-1, -1, -1, horiz)
+    score_right = score_tree(t, x, y, x+1, x_len, 1, horiz)
+    score_up = score_tree(t, x, y, y-1, -1, -1, vert)
+    score_down = score_tree(t, x, y, y+1, y_len, 1, vert)
 
-    score_down = 0
-    for i_y in range(y+1, y_len, 1):
-        score_down += 1
-        if tree_at(x, i_y) >= t:
-            break
-    
     return score_left * score_right * score_down * score_up
 
 for l in tree_lines:
