@@ -79,9 +79,6 @@ for i, t in enumerate(trees):
             visible[i] = True
         new_score = tree_score(t, i)
         best_score = max(best_score, new_score)
-    
-print(len(visible))
-print(best_score)
 
 submit(len(visible), part="a", day=8, year=2022)
 submit(best_score, part="b", day=8, year=2022)
