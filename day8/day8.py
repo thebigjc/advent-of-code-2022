@@ -29,32 +29,24 @@ def tree_at(x, y):
 
     return trees[x + y * y_len]
 
+def visible_dir(t, start, end, step, tree_func):
+    visible = True
+    for i_x in range(start, end, step):
+        if tree_func(i_x) >= t:
+            visible = False
+    return visible
+
 def is_visible(t, i):
     (x, y) = to_coords(i, y_len)
 
-    visible_left = True
-    for i_x in range(0, x, 1):
-        if tree_at(i_x, y) >= t:
-            visible_left = False
-
-    visible_right = True
-    for i_x in range(x_len-1, x, -1):
-        if tree_at(i_x, y) >= t:
-            visible_right = False
-
-    visible_down = True
-    for i_y in range(0, y, 1):
-        if tree_at(x, i_y) >= t:
-            visible_down = False
-
-    visible_up = True
-    for i_y in range(y_len-1, y, -1):
-        if tree_at(x, i_y) >= t:
-            visible_up = False
+    visible_left = visible_dir(t, 0, x, 1, lambda l: tree_at(l, y))
+    visible_right = visible_dir(t, x_len-1, x, -1, lambda l: tree_at(l, y))
+    visible_down = visible_dir(t, 0, y, 1, lambda l: tree_at(x, l))
+    visible_up = visible_dir(t, y_len-1, y, -1, lambda l: tree_at(x, l))
     
     return visible_left or visible_right or visible_down or visible_up
 
-def score_tree(t, x, y, start, end, step, tree_func):
+def score_tree(t, start, end, step, tree_func):
     score = 0
     for i_x in range(start, end, step):
         score += 1
@@ -68,10 +60,10 @@ def tree_score(t, i):
     horiz = lambda l: tree_at(l, y)
     vert = lambda l: tree_at(x, l)
 
-    score_left = score_tree(t, x, y, x-1, -1, -1, horiz)
-    score_right = score_tree(t, x, y, x+1, x_len, 1, horiz)
-    score_up = score_tree(t, x, y, y-1, -1, -1, vert)
-    score_down = score_tree(t, x, y, y+1, y_len, 1, vert)
+    score_left = score_tree(t, x-1, -1, -1, horiz)
+    score_right = score_tree(t, x+1, x_len, 1, horiz)
+    score_up = score_tree(t, y-1, -1, -1, vert)
+    score_down = score_tree(t, y+1, y_len, 1, vert)
 
     return score_left * score_right * score_down * score_up
 
