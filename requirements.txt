@@ -2,3 +2,4 @@ advent-of-code-data
 pytest
 mypy
 parse
+black

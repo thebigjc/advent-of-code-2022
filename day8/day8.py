@@ -1,4 +1,5 @@
 from math import prod
+import time
 
 from aocd import lines, submit
 
@@ -99,7 +100,10 @@ def day8(tree_lines):
 
 
 if __name__ == "__main__":
+    t1 = time.perf_counter()
     part_a, part_b = day8(lines)
+    t2 = time.perf_counter()
+    print(f"Execution time: {t2 - t1:0.4f} seconds")
 
     submit(part_a, part="a", day=8, year=2022)
     submit(part_b, part="b", day=8, year=2022)
