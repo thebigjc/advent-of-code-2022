@@ -157,7 +157,7 @@ def test_part_b():
 ####....####....####....####....####....
 #####.....#####.....#####.....#####.....
 ######......######......######......####
-#######.......#######.......#######.....""".splitlines()
+#######.......#######.......#######.....""".replace(".", " ").splitlines()
 
 class State:
     def __init__(self):
@@ -176,7 +176,7 @@ class State:
         if self.x in (col-1, col, col+1):
             self.image.append("#")
         else:
-            self.image.append(".")
+            self.image.append(" ")
 
         self.ip += 1
 
@@ -204,4 +204,6 @@ def day10(inputs):
     return state
     
 if __name__ == "__main__":
-    submit(day10(lines).score, part="a", day=10, year=2022)
+    state = day10(lines)
+    submit(state.score, part="a", day=10, year=2022)
+    print(state.image_str())
