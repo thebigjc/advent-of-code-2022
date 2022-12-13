@@ -3,3 +3,4 @@ pytest
 mypy
 parse
 black
+NetworkX

@@ -1,33 +1,33 @@
 from aocd import lines, submit
-import networkx as nx
 
 def get_value(input, x, y, width):
     if x>= 0 and y >= 0 and x < width and y < len(input) // width:
-        v = input[x + y * width]
+        idx = x + y * width
+        v = input[idx]
         if v == 'S':
-            return 'a'
+            return 'a', idx
         elif v == 'E':
-            return 'z'
-        return v
-    return None
+            return 'z', idx
+        return v,idx
+    return None, None
 
 def build_graph(input, width):
-    graph = nx.DiGraph()
-    graph.add_nodes_from([(x, y) for x in range(width) for y in range(len(input) // width)])
+    graph = []
 
     deltas = ((-1, 0), (1, 0), (0, -1), (0, 1))
 
     for y in range(len(input) // width):
         for x in range(width):
-            start_val = get_value(input, x, y, width)
-            start = (x,y)
+            start_val, start_idx = get_value(input, x, y, width)
+ 
             for d in deltas:
                 dest = (x + d[0], y + d[1])
-                dest_val = get_value(input, dest[0], dest[1], width)                    
+                dest_val, dest_idx = get_value(input, dest[0], dest[1], width)                    
                 if not dest_val:
                     continue
+                
                 if ord(dest_val) - ord(start_val) <= 1:
-                    graph.add_edge(start, dest)
+                    graph.append((dest_idx, start_idx))
 
     return graph
 
@@ -47,29 +47,24 @@ def path_len(hills, start_chars):
     graph = build_graph(input, width)
     
     end = input.index('E')
-    end_pos = (end % width, end // width)
 
-    lens = []
+    dist = [float("Inf")] * len(input)
+    dist[end] = 0
+    w = 1
 
-    for start_char in start_chars:
-        starts = [i for i, x in enumerate(input) if x == start_char]
-        print(f"Found {len(starts)} starts for {start_char}")
-        n = 0
-        for start in starts:
-            start_pos = (start % width, start // width)
-            path = None
+    for i in range(len(input)-1):
+        for (u,v) in graph:
+            if dist[u] != float("Inf") and dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
 
-            try:
-                path = nx.shortest_path(graph, source=start_pos, target=end_pos)
-            except:
-                pass
+    for u, v in graph:
+            if dist[u] != float("Inf") and dist[u] + w < dist[v]:
+                print("Graph contains negative weight cycle")
+                return
 
-            if path:
-                lens.append(len(path)-1)
-    
-    return min(lens)
-
+    return min(dist[i] for i, x in enumerate(input) if x in start_chars)
 
 if __name__ == "__main__":
+    #test_part_a()
     submit(path_len(lines, ['S']), part="a", day=12, year=2022)
     submit(path_len(lines, ['S', 'a']), part="b", day=12, year=2022)
