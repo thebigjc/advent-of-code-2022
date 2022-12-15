@@ -73,9 +73,9 @@ def day15_b(sensors_and_beacons, max_coord):
         ranges = []
 
         for sensor_x, sensor_y, distance in sensors:
-            if abs(row - sensor_y) > distance:
-                continue
             distance -= abs(row - sensor_y)
+            if distance < 0:
+                continue
             ranges.append(
                 (max(sensor_x - distance, 0), min(max_coord, sensor_x + distance))
             )
