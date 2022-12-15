@@ -91,7 +91,7 @@ def day15_b(sensors_and_beacons, max_coord):
 
 
 if __name__ == "__main__":
-#    test_part_a()
-#    submit(day15_a(lines, 2000000), part="a", day=15, year=2022)
-#    test_part_b()
+    test_part_a()
+    submit(day15_a(lines, 2000000), part="a", day=15, year=2022)
+    test_part_b()
     submit(day15_b(lines, 4000000), part="b", day=15, year=2022)
