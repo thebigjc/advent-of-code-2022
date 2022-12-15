@@ -1,3 +1,4 @@
+from functools import cache
 from itertools import pairwise
 from aocd import lines, submit
 from parse import parse
@@ -52,9 +53,9 @@ def day15_a(sensors_and_beacons, row):
 
     return len(impossible_locations)
 
-
+@cache
 def overlap(r1, r2):
-    return max(r1[0], r2[0]) <= min(r1[1], r2[1])
+    return 
 
 
 def day15_b(sensors_and_beacons, max_coord):
@@ -70,8 +71,6 @@ def day15_b(sensors_and_beacons, max_coord):
 
     for row in range(max_coord):
         ranges = []
-        if (row % 1000) == 0:
-            print(row)
 
         for sensor_x, sensor_y, distance in sensors:
             if abs(row - sensor_y) > distance:
@@ -85,14 +84,14 @@ def day15_b(sensors_and_beacons, max_coord):
 
         row_range = (0, 0)
         for r in ranges:
-            if overlap(row_range, r):
-                row_range = (min(row_range[0], r[0]), max(row_range[1], r[1]))
+            if r[0] <= min(row_range[1], r[1]):
+                row_range = (row_range[0], max(row_range[1], r[1]))
             else:
                 return (row_range[1] + 1) * 4000000 + row
 
 
 if __name__ == "__main__":
-    test_part_a()
-    submit(day15_a(lines, 2000000), part="a", day=15, year=2022)
-    test_part_b()
+#    test_part_a()
+#    submit(day15_a(lines, 2000000), part="a", day=15, year=2022)
+#    test_part_b()
     submit(day15_b(lines, 4000000), part="b", day=15, year=2022)
