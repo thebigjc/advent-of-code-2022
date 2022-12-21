@@ -4,3 +4,4 @@ mypy
 parse
 black
 NetworkX
+sympy
