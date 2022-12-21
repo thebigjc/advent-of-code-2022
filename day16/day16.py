@@ -18,15 +18,17 @@ max_score = 0
 flows = {}
 distances = defaultdict(lambda: 1000)
 
+
 @cache
-def search(valves, time=30, valve="AA", e = False):
+def search(valves, time=30, valve="AA", e=False):
     return max(
         [
             flows[v] * (time - distances[valve, v] - 1)
             + search(valves - {v}, time - distances[valve, v] - 1, v, e)
             for v in valves
-            if distances[valve, v] < time 
-        ] + [search(valves=valves, time=26) if e else 0]
+            if distances[valve, v] < time
+        ]
+        + [search(valves=valves, time=26) if e else 0]
     )
 
 
@@ -73,6 +75,7 @@ Valve JJ has flow rate=21; tunnel leads to valve II""".splitlines()
 
 def test_part_a():
     assert day16(TEST) == 1651
+
 
 def test_part_b():
     assert day16(TEST, True) == 1707

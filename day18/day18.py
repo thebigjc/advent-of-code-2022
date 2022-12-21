@@ -1,4 +1,4 @@
-from aocd import data, lines, submit
+from aocd import lines, submit
 
 TEST = """2,2,2
 1,2,2
